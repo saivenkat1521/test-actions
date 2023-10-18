@@ -1,0 +1,9 @@
+name: ruinning shell commands
+on: push
+
+jobs:
+  run-shell-command:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo a String
+        run: echo "Hello world!this is our actions file"
