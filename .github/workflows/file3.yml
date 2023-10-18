@@ -1,0 +1,32 @@
+name: Install Apache2 and Check Web Page
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Apache2
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y apache2
+
+    - name: Start Apache2 service
+      run: sudo systemctl start apache2
+
+    - name: Enable Apache2 to start on boot
+      run: sudo systemctl enable apache2
+
+    - name: Check Apache2 default web page
+      run: |
+        response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+        if [ $response_code -eq 200 ]; then
+          echo "Apache2 web page is working. Status code: $response_code"
+        else
+          echo "Apache2 web page is not working. Status code: $response_code"
+          exit 1
+        fi

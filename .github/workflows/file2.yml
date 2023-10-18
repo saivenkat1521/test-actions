@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -12,4 +12,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install apache2 -y
-          
+      - name: Check Apache2 web page
+        run: |
+        # Replace "http://localhost" with the actual URL of your web page.
+        response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+        if [ $response_code -eq 200 ]; then
+          echo "Apache2 web page is running. Status code: $response_code"
+         else
+          echo "Apache2 web page is not running. Status code: $response_code"
+          exit 1
+        fi  
